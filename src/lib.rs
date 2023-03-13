@@ -49,38 +49,6 @@ where
     })
 }
 
-/*
-pub fn reverse_shell_listener(){
-    let mut counter: i8 = 0;
-    let inc: TcpStream = listener("0.0.0.0".to_string(), 23234);
-    let inc_clone = match inc.try_clone() {
-        Ok(c) => c,
-        Err(_) => return
-    };
-    let t1 = if let Some(t) = pipe_thread(std::io::stdin(), inc_clone) {
-        counter += 1;
-        t
-    } else {
-        return
-    };
-    let t2 = match pipe_thread(inc, std::io::stdout()){
-        Some(t) => {
-            counter += 1;
-            t
-        },
-        None => return
-    };
-    if counter == 2{
-        match t1.join() {
-            Ok(_) => {},
-            Err(_) => return
-        }
-        match t2.join() {
-            Ok(_) => {},
-            Err(_) => return
-        }
-    }
-}*/
 pub fn rsl() -> Result<(), Error>{
     let stream: TcpStream = listener("0.0.0.0".to_string(), 23234)?;
     let t1 = pipe_thread(std::io::stdin(), stream.try_clone()?);
@@ -96,13 +64,7 @@ pub fn rsl() -> Result<(), Error>{
     Ok(())
 }
 
-/* 
-fn run_rsl_threads(t1: Rsljh, t2: Rsljh) -> Result<(), Error>{
-    t1.join()?;
-    t2.join()?;
-    Ok(())
-}
-*/
+
 pub fn reader(stream: &TcpStream) -> Result<String, Error> {
     let mut msg: BufReader<&TcpStream> = BufReader::new(&stream);
     let mut buffer: Vec<u8> = Vec::new();
@@ -125,14 +87,4 @@ pub fn sender(mut stream: &TcpStream, msg: &String) -> Result<(), Error> {
     Ok(())
 }
 
-/*
-#[cfg(test)]
-mod tests {
-    use super::*;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}*/
