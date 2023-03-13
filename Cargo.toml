@@ -10,5 +10,5 @@ repository = "https://github.com/linuxchr/rnu"
 
 [dependencies]
 
-[profile.production]
-inherits = "release"
+[profile.dev]
+opt-level = 3
