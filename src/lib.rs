@@ -2,17 +2,17 @@ use std::io::{BufRead, BufReader, Error, ErrorKind, Write};
 use std::net::{TcpListener, TcpStream};
 use std::str::from_utf8;
 
-pub fn listener(ip: String, port: i16) -> TcpStream {
+pub fn listener(ip: String, port: i16) -> Result<TcpStream, Error> {
     let server = TcpListener::bind(format!("{}:{}", ip, port));
     loop {
         for stream in server.as_ref().expect("Failed!").incoming() {
             match stream {
                 Ok(stream) => {
-                    println!("{}", stream.peer_addr().expect("TODO: panic message"));
-                    return stream;
+                    println!("New Connection: {}", stream.peer_addr()?);
+                    return Ok(stream);
                 }
                 Err(e) => {
-                    panic!("Error: {}", e);
+                    Err(e)?;
                 }
             }
         }
@@ -82,7 +82,7 @@ pub fn reverse_shell_listener(){
     }
 }*/
 pub fn rsl() -> Result<(), Error>{
-    let stream: TcpStream = listener("0.0.0.0".to_string(), 23234);
+    let stream: TcpStream = listener("0.0.0.0".to_string(), 23234)?;
     let t1 = pipe_thread(std::io::stdin(), stream.try_clone()?);
     let t2 = pipe_thread(stream, std::io::stdout());
     match t1.join() {
