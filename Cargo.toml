@@ -10,6 +10,6 @@ repository = "https://github.com/linuxchr/rnu"
 
 [dependencies]
 
-[profile.dev]
-opt-level = 3
-debug = false
+#[profile.dev]
+#opt-level = 3
+#debug = false
