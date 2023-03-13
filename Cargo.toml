@@ -2,8 +2,9 @@
 name = "rnu"
 version = "0.1.0"
 author  = "Linuxchr linuxchr@mail.linuxchr.de"
-description = "Some Network Utilities for Linux"
+description = "rnu = Rust Network Utilities, Some Network Utilities for Linux"
 license= "WTFPL"
+repository = "https://github.com/linuxchr/rnu"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
