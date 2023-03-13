@@ -3,7 +3,7 @@ use std::io::{Error, ErrorKind, Write};
 use std::net::{TcpListener, TcpStream};
 pub mod client;
 
-pub fn listener(ip: String, port: i16) -> Result<TcpStream, Error> {
+pub fn listener(ip: String, port: u16) -> Result<TcpStream, Error> {
     let server = TcpListener::bind(format!("{}:{}", ip, port));
     loop {
         for stream in server.as_ref().expect("Failed!").incoming() {
