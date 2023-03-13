@@ -12,3 +12,4 @@ repository = "https://github.com/linuxchr/rnu"
 
 [profile.dev]
 opt-level = 3
+debuginfo = false
