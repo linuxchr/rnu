@@ -1,6 +1,6 @@
 [package]
 name = "rnu"
-version = "0.1.1"
+version = "0.1.2"
 author  = "Linuxchr linuxchr@mail.linuxchr.de"
 description = "rnu = Rust Network Utilities, Some Network Utilities for Linux"
 license= "WTFPL"
@@ -12,4 +12,4 @@ repository = "https://github.com/linuxchr/rnu"
 
 [profile.dev]
 opt-level = 3
-debuginfo = false
+debug = false
