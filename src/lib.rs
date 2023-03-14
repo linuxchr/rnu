@@ -50,8 +50,8 @@ where
     })
 }
 
-pub fn rsl() -> Result<(), Error> {
-    let stream: TcpStream = listener("0.0.0.0".to_string(), 23234)?;
+pub fn rsl(port: u16) -> Result<(), Error> {
+    let stream: TcpStream = listener("0.0.0.0".to_string(),port)?;
     let t1 = pipe_thread(std::io::stdin(), stream.try_clone()?);
     let t2 = pipe_thread(stream, std::io::stdout());
     match t1.join() {
