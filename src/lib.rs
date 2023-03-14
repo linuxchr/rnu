@@ -1,4 +1,3 @@
-pub use client::*;
 use std::io::{Error, ErrorKind, Write};
 use std::net::{TcpListener, TcpStream};
 pub mod client;
