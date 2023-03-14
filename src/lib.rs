@@ -3,7 +3,7 @@ use std::net::{TcpListener, TcpStream};
 pub mod client;
 
 pub fn listener(ip: String, port: u16) -> Result<TcpStream, Error> {
-    let server = TcpListener::bind(format!("{}:{}", ip, port));
+    let server = TcpListener::bind(format!("{ip}:{port}"));
     loop {
         for stream in server.as_ref().expect("Failed!").incoming() {
             match stream {
@@ -20,6 +20,7 @@ pub fn listener(ip: String, port: u16) -> Result<TcpStream, Error> {
 }
 
 type Rsljh = std::thread::JoinHandle<Result<(), Error>>;
+
 fn pipe_thread<R, W>(mut r: R, mut w: W) -> Rsljh
 where
     R: std::io::Read + Send + 'static,
