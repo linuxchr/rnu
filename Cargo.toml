@@ -1,6 +1,6 @@
 [package]
 name = "rnu"
-version = "0.2.5"
+version = "0.2.6"
 authors  = ["Linuxchr linuxchr@mail.linuxchr.de"]
 description = "rnu = Rust Network Utilities, Some Network Utilities for Linux"
 license= "WTFPL"
