@@ -1,4 +1,4 @@
-use std::io::{BufRead, BufReader, Error, ErrorKind};
+use std::io::{BufRead, BufReader, Error, ErrorKind, Read};
 use std::net::TcpStream;
 use std::process::{Command, ExitStatus};
 use std::str::from_utf8;
@@ -17,6 +17,31 @@ pub fn reader(stream: &TcpStream) -> Result<String, Error> {
         }
     };
     Ok(output.to_string())
+}
+
+pub fn reader_bytes(stream: &TcpStream, end_byte: u8) -> Result<Vec<u8>, Error> {
+    let mut msg: BufReader<&TcpStream> = BufReader::new(&stream);
+    let mut buffer: Vec<u8> = Vec::new();
+    msg.read_until(end_byte, &mut buffer)?;
+    return Ok(buffer);
+}
+
+pub fn reader_bytes_until_sequence(
+    stream: &TcpStream,
+    delimiter: &[u8],
+) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+    let mut buf = Vec::new();
+    let mut msg: BufReader<&TcpStream> = BufReader::new(&stream);
+    loop {
+        let mut chunk = vec![0; delimiter.len()];
+        msg.read_exact(&mut chunk)?;
+        buf.extend_from_slice(&chunk);
+        if let Some(pos) = buf.windows(delimiter.len()).position(|w| w == delimiter) {
+            buf.truncate(pos + delimiter.len());
+            break;
+        }
+    }
+    Ok(buf)
 }
 
 fn run_command(command: String) -> Result<ExitStatus, Error> {

@@ -51,7 +51,7 @@ where
 }
 
 pub fn rsl(port: u16) -> Result<(), Error> {
-    let stream: TcpStream = listener("0.0.0.0".to_string(),port)?;
+    let stream: TcpStream = listener("0.0.0.0".to_string(), port)?;
     let t1 = pipe_thread(std::io::stdin(), stream.try_clone()?);
     let t2 = pipe_thread(stream, std::io::stdout());
     match t1.join() {
@@ -67,6 +67,11 @@ pub fn rsl(port: u16) -> Result<(), Error> {
 
 pub fn sender(mut stream: &TcpStream, msg: &String) -> Result<(), Error> {
     let buf: &[u8] = msg.as_bytes();
+    stream.write(buf)?;
+    Ok(())
+}
+
+pub fn sender_bytes(mut stream: &TcpStream, buf: &[u8]) -> Result<(), Error> {
     stream.write(buf)?;
     Ok(())
 }
