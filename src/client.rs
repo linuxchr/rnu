@@ -26,22 +26,29 @@ pub fn reader_bytes(stream: &TcpStream, end_byte: u8) -> Result<Vec<u8>, Error> 
     return Ok(buffer);
 }
 
-pub fn reader_bytes_until_sequence(
-    stream: &TcpStream,
-    delimiter: &[u8],
-) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
-    let mut buf = Vec::new();
-    let mut msg: BufReader<&TcpStream> = BufReader::new(&stream);
+pub fn reader_bytes_until_sequence<R: Read>(
+    input: &mut R,
+    delimeter: Vec<u8>,
+) -> Result<Vec<u8>, Error> {
+    let mut buf: Vec<u8> = Vec::new();
+    let mut iend_pos = 0;
     loop {
-        let mut chunk = vec![0; delimiter.len()];
-        msg.read_exact(&mut chunk)?;
-        buf.extend_from_slice(&chunk);
-        if let Some(pos) = buf.windows(delimiter.len()).position(|w| w == delimiter) {
-            buf.truncate(pos + delimiter.len());
-            break;
+        let mut byte = [0; 1];
+        input.read_exact(&mut byte)?;
+        if byte[0] == delimeter[iend_pos] {
+            iend_pos += 1;
+            if iend_pos == delimeter.len() {
+                for i in delimeter {
+                    buf.push(i);
+                }
+                return Ok(buf);
+            }
+        } else {
+            buf.extend(&delimeter[0..iend_pos]);
+            iend_pos = 0;
+            buf.push(byte[0]);
         }
     }
-    Ok(buf)
 }
 
 fn run_command(command: String) -> Result<ExitStatus, Error> {
